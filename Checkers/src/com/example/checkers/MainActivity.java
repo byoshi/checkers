@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.checkers.ImageAdapter.SquareStatus;
 
@@ -18,6 +19,9 @@ public class MainActivity extends Activity {
 
 		final GridView gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new ImageAdapter(this));
+		
+		final TextView currentPlayer = (TextView) findViewById(R.id.currentplayer);
+		final TextView gameState = (TextView) findViewById(R.id.gamestate);
 
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
@@ -25,7 +29,7 @@ public class MainActivity extends Activity {
 					long id) {
 				ImageAdapter imageAdapter = (ImageAdapter) gridview
 						.getAdapter();
-				if (imageAdapter.Move(position))
+				if (imageAdapter.Move(position, currentPlayer, gameState))
 				{
 					return;
 				}
@@ -37,8 +41,6 @@ public class MainActivity extends Activity {
 					imageAdapter.highlightSquare(v, position,
 							SquareStatus.redPiece);
 				}
-				/*Toast.makeText(MainActivity.this, "" + position,
-						Toast.LENGTH_SHORT).show();*/
 			}
 		});
 	}

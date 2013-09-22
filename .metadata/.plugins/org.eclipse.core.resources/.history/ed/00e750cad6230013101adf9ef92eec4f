@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    android:paddingBottom="40dp" >
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="680px"
+        android:layout_height="680px"
+        android:layout_gravity="center"
+        android:columnWidth="85px"
+        android:horizontalSpacing="0dp"
+        android:numColumns="8"
+        android:stretchMode="none"
+        android:verticalSpacing="0dp"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:paddingTop="420dp"
+        android:id="@+id/currentplayer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/redmove"/>
+
+</RelativeLayout>

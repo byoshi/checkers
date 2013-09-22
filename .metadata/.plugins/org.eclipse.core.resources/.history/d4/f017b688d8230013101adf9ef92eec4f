@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Checkers</string>
+    <string name="action_settings">Settings</string>
+	<string name="new_game">New Game</string>
+	<string name="gameoverred">Game Over. Red wins!</string>
+	<string name="gameoverblack">Game Over. Black wins!</string>
+	<string name="redmove">Red to move</string>
+	<string name="blackmove">Black to move</string>
+	<string name="redwinning">Red has captured more pieces than Black</string>
+	<string name="blackwinning">Black has captured more pieces than Red</string>
+	<string name="tie">Red and Black are tied</string>
+	
+</resources>

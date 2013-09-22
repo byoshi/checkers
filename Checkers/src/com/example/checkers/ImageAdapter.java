@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter {
 	public ImageAdapter(Context c) {
@@ -77,9 +78,10 @@ public class ImageAdapter extends BaseAdapter {
 		}
 	}
 
-	public boolean Move(int position) {
+	public boolean Move(int position, TextView currentPlayerText, TextView gameState) {
 		SquareStatus viewStatus = checkersBoard.get(position);
 		boolean success = false;
+		boolean jumped = false;
 
 		// If trying to move to an occupied square
 		if (viewStatus == SquareStatus.redPiece
@@ -91,54 +93,62 @@ public class ImageAdapter extends BaseAdapter {
 
 		if (curPlayer == Player.Player1) {
 			if (rightEdgeBrownSquareLocations.contains(position)) { //If trying to move to right edge
-				if (getSquareStatus(position + move1) == SquareStatus.redPieceHighlight) {
+				if ((position + move1) < boardSize && getSquareStatus(position + move1) == SquareStatus.redPieceHighlight) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move1, 0, SquareStatus.brownSquare);
 					success = true;
-				} else if (getSquareStatus(position + jump1) == SquareStatus.redPieceHighlight
+				} else if ((position + jump1) < boardSize && (position + move1) < boardSize &&  getSquareStatus(position + jump1) == SquareStatus.redPieceHighlight
 						&& getSquareStatus(position + move1) == SquareStatus.blackPiece) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move1, 0, SquareStatus.brownSquare);
 					setSquareImage(position + jump1, 0, SquareStatus.brownSquare);
 					success = true;
+					jumped = true;
 				}
 			} else if (leftEdgeBrownSquareLocations.contains(position)) { //If trying to move to left edge
-				if (getSquareStatus(position + move2) == SquareStatus.redPieceHighlight) {
+				if ((position + move2) < boardSize && getSquareStatus(position + move2) == SquareStatus.redPieceHighlight) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move2, 0, SquareStatus.brownSquare);
 					success = true;
-				} else if (getSquareStatus(position + jump2) == SquareStatus.redPieceHighlight
+				} else if ((position + jump2) < boardSize && (position + move2) < boardSize && getSquareStatus(position + jump2) == SquareStatus.redPieceHighlight
 						&& getSquareStatus(position + move2) == SquareStatus.blackPiece) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move2, 0, SquareStatus.brownSquare);
 					setSquareImage(position + jump2, 0, SquareStatus.brownSquare);
 					success = true;
+					jumped = true;
 				}
 			} else { //If trying to move to middle board
-				if (getSquareStatus(position + move1) == SquareStatus.redPieceHighlight) {
+				if ((position + move1) < boardSize && getSquareStatus(position + move1) == SquareStatus.redPieceHighlight) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move1, 0, SquareStatus.brownSquare);
 					success = true;
-				} else if (getSquareStatus(position + move2) == SquareStatus.redPieceHighlight) {
+				} else if ((position + move2) < boardSize && getSquareStatus(position + move2) == SquareStatus.redPieceHighlight) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move2, 0, SquareStatus.brownSquare);
 					success = true;
-				} else if (getSquareStatus(position + jump1) == SquareStatus.redPieceHighlight
+				} else if ((position + jump1) < boardSize && (position + move1) < boardSize && getSquareStatus(position + jump1) == SquareStatus.redPieceHighlight
 						&& getSquareStatus(position + move1) == SquareStatus.blackPiece) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move1, 0, SquareStatus.brownSquare);
 					setSquareImage(position + jump1, 0, SquareStatus.brownSquare);
 					success = true;
-				} else if (getSquareStatus(position + jump2) == SquareStatus.redPieceHighlight
+					jumped = true;
+				} else if ((position + jump2) < boardSize && (position + move2) < boardSize && getSquareStatus(position + jump2) == SquareStatus.redPieceHighlight
 						&& getSquareStatus(position + move2) == SquareStatus.blackPiece) {
 					setSquareImage(position, 3, SquareStatus.redPiece);
 					setSquareImage(position + move2, 0, SquareStatus.brownSquare);
 					setSquareImage(position + jump2, 0, SquareStatus.brownSquare);
 					success = true;
+					jumped = true;
 				}
 			}
 			if (success) {
+				currentPlayerText.setText(R.string.blackmove);
 				curPlayer = Player.Player2;
+			}
+			if (jumped) {
+				numBlackPiecesRemaining--;
 			}
 		} else {
 			if (rightEdgeBrownSquareLocations.contains(position)) { //If trying to move to right edge
@@ -152,6 +162,7 @@ public class ImageAdapter extends BaseAdapter {
 					setSquareImage(position - move2, 0, SquareStatus.brownSquare);
 					setSquareImage(position - jump2, 0, SquareStatus.brownSquare);
 					success = true;
+					jumped = true;
 				}
 			} else if (leftEdgeBrownSquareLocations.contains(position)) { //If trying to move to left edge
 				if ((position - move1) > 0 && getSquareStatus(position - move1) == SquareStatus.blackPieceHighlight) {
@@ -164,6 +175,7 @@ public class ImageAdapter extends BaseAdapter {
 					setSquareImage(position - move1, 0, SquareStatus.brownSquare);
 					setSquareImage(position - jump1, 0, SquareStatus.brownSquare);
 					success = true;
+					jumped = true;
 				}
 			} else { //If trying to move to middle board
 				if ((position - move1) > 0 && getSquareStatus(position - move1) == SquareStatus.blackPieceHighlight) {
@@ -180,19 +192,31 @@ public class ImageAdapter extends BaseAdapter {
 					setSquareImage(position - move1, 0, SquareStatus.brownSquare);
 					setSquareImage(position - jump1, 0, SquareStatus.brownSquare);
 					success = true;
+					jumped = true;
 				} else if ((position - jump2) > 0 && (position - move2) > 0 && getSquareStatus(position - jump2) == SquareStatus.blackPieceHighlight
 						&& getSquareStatus(position - move2) == SquareStatus.redPiece) {
 					setSquareImage(position, 2, SquareStatus.blackPiece);
 					setSquareImage(position - move2, 0, SquareStatus.brownSquare);
 					setSquareImage(position - jump2, 0, SquareStatus.brownSquare);
 					success = true;
+					jumped = true;
 				}
 			}
 			if (success) {
+				currentPlayerText.setText(R.string.redmove);
 				curPlayer = Player.Player1;
+			}
+			if (jumped) {
+				numRedPiecesRemaining--;
 			}
 		}
 		unhighlightSquare();
+		updateGameState(gameState);
+		
+		if (numRedPiecesRemaining == 0 || numBlackPiecesRemaining == 0) {
+			gameOver(gameState);
+		}
+		
 		return success;
 	}
 
@@ -264,6 +288,24 @@ public class ImageAdapter extends BaseAdapter {
 		}
 		return false;
 	}
+	
+	private void updateGameState(TextView gameState) {
+		if (numRedPiecesRemaining > numBlackPiecesRemaining) {
+			gameState.setText(R.string.redwinning);
+		} else if (numBlackPiecesRemaining > numRedPiecesRemaining) {
+			gameState.setText(R.string.blackwinning);
+		} else {
+			gameState.setText(R.string.tie);
+		}
+	}
+	
+	private void gameOver(TextView gameState) {
+		if (numRedPiecesRemaining > 0) {
+			gameState.setText(R.string.gameoverred);
+		} else {
+			gameState.setText(R.string.gameoverblack);	
+		}
+	}
 
 	// Private members
 	private int boardSize = 64;
@@ -271,6 +313,8 @@ public class ImageAdapter extends BaseAdapter {
 	private int move2 = 9;
 	private int jump1 = 14;
 	private int jump2 = 18;
+	private int numBlackPiecesRemaining = 12;
+	private int numRedPiecesRemaining = 12;
 	private ArrayList<Integer> blackPieceLocations = new ArrayList<Integer>();
 	private ArrayList<Integer> redPieceLocations = new ArrayList<Integer>();
 	private ArrayList<Integer> redSquareLocations = new ArrayList<Integer>();
