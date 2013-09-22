@@ -8,24 +8,37 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.checkers.ImageAdapter.SquareStatus;
+
 public class MainActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.activity_main);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-	    GridView gridview = (GridView) findViewById(R.id.gridview);
-	    gridview.setAdapter(new ImageAdapter(this));
+		final GridView gridview = (GridView) findViewById(R.id.gridview);
+		gridview.setAdapter(new ImageAdapter(this));
 
-	    gridview.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View v, int position, 
-	    
-	    long
-	   id) {
-	            Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-	        }
-	    });
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position,
+
+					long id) {
+				ImageAdapter imageAdapter = (ImageAdapter) gridview
+						.getAdapter();
+				imageAdapter.unhighlightSquare();
+				if (imageAdapter.getSquareStatus(position) == SquareStatus.blackPiece) {
+					imageAdapter.highlightSquare(v, position,
+							SquareStatus.blackPiece);
+				} else if (imageAdapter.getSquareStatus(position) == SquareStatus.redPiece) {
+					imageAdapter.highlightSquare(v, position,
+							SquareStatus.redPiece);
+				}
+				Toast.makeText(MainActivity.this, "" + position,
+						Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	/*
